@@ -159,7 +159,7 @@
     const hearts = [];
 
     function resetHeart(heart) {
-      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.left = Math.random() * (window.innerWidth - heart.offsetWidth) + "px";
       heart.style.bottom = "0px";
       heart.style.opacity = (0.4 + Math.random() * 0.5).toFixed(2);
 
