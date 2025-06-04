@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <title>KRISTIEE – Dirty</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
@@ -19,8 +19,8 @@
       --blur-amount: 15px;
     }
 
-    body, html {
-      height: 100%;
+    html, body {
+      min-height: 100vh;
       width: 100%;
       font-family: 'Poppins', sans-serif;
       background: #000;
@@ -28,9 +28,9 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      flex-direction: column;
       color: white;
-      padding: 1rem;
+      margin: 0;
     }
 
     body::before {
@@ -52,12 +52,12 @@
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem);
     }
 
     .heart {
@@ -75,10 +75,11 @@
       animation-duration: 1.2s;
       animation-iteration-count: infinite;
       animation-timing-function: ease-in-out;
+
       box-shadow:
-        0 0 20px 10px rgba(255, 0, 0, 1),
-        0 0 30px 15px rgba(255, 0, 0, 0.8),
-        0 0 40px 20px rgba(255, 0, 0, 0.6);
+        0 0 10px 5px rgba(255, 0, 0, 0.6),
+        0 0 20px 10px rgba(255, 0, 0, 0.3),
+        0 0 30px 15px rgba(255, 0, 0, 0.2);
     }
 
     .heart::before,
@@ -105,9 +106,9 @@
       0%, 100% {
         transform: rotate(-45deg) scale(1);
         box-shadow:
-          0 0 20px 10px rgba(255, 0, 0, 1),
-          0 0 30px 15px rgba(255, 0, 0, 0.8),
-          0 0 40px 20px rgba(255, 0, 0, 0.6);
+          0 0 10px 5px rgba(255, 0, 0, 0.6),
+          0 0 20px 10px rgba(255, 0, 0, 0.3),
+          0 0 30px 15px rgba(255, 0, 0, 0.2);
       }
       50% {
         transform: rotate(-45deg) scale(1.2);
@@ -115,23 +116,20 @@
       }
     }
 
-    /* Ограничение размера сердечек на мобильных */
+    /* Мобильная адаптация */
     @media (max-width: 480px) {
+      .content {
+        max-width: 90vw;
+        padding: 1rem;
+      }
       .heart {
-        width: 12px !important;
-        height: 12px !important;
+        width: 14px;
+        height: 14px;
       }
       .heart::before,
       .heart::after {
-        width: 12px !important;
-        height: 12px !important;
-      }
-      .heart::before {
-        top: -6px !important;
-      }
-      .heart::after {
-        left: 6px !important;
-        top: 0 !important;
+        width: 14px;
+        height: 14px;
       }
     }
   </style>
@@ -153,38 +151,23 @@
       });
     }
 
-    // Уменьшаем количество сердечек на мобильных
-    const isMobile = window.innerWidth <= 480;
-    const heartsCount = isMobile ? 15 : 40;
+    // Определяем количество сердечек в зависимости от ширины экрана
+    const heartsCount = window.innerWidth < 480 ? 15 : 40;
     const hearts = [];
 
     function resetHeart(heart) {
-      heart.style.left = Math.random() * (window.innerWidth - heart.offsetWidth) + "px";
+      const width = heart.offsetWidth || 15;
+      heart.style.left = Math.random() * (window.innerWidth - width) + "px";
       heart.style.bottom = "0px";
-      heart.style.opacity = (0.4 + Math.random() * 0.5).toFixed(2);
-
-      // На мобилке ограничиваем размер случайным образом (10 - 12px)
-      if (isMobile) {
-        const size = 10 + Math.random() * 2;
-        heart.style.width = size + "px";
-        heart.style.height = size + "px";
-
-        // Скорректируем ::before и ::after через стиль CSS переменных
-        heart.style.setProperty('--heart-before-top', (-size / 2) + 'px');
-        heart.style.setProperty('--heart-after-left', (size / 2) + 'px');
-        heart.style.setProperty('--heart-after-top', '0px');
-      } else {
-        heart.style.width = "20px";
-        heart.style.height = "20px";
-      }
+      heart.style.opacity = (0.3 + Math.random() * 0.4).toFixed(2);
     }
 
     function createHeart() {
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.style.animationDelay = (Math.random() * 1.2) + 's';
-      resetHeart(heart);
       document.body.appendChild(heart);
+      resetHeart(heart);
       return {
         el: heart,
         y: 0,
