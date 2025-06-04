@@ -2,42 +2,36 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KRISTIEE – Dirty</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-    * {
-      box-sizing: border-box;
+    html, body {
       margin: 0;
       padding: 0;
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+      font-family: 'Poppins', sans-serif;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: white;
     }
 
     :root {
       --text-bg: rgba(40, 40, 40, 0.8);
       --text-radius: 20px;
-      --blur-amount: 15px;
-    }
-
-    html, body {
-      min-height: 100vh;
-      width: 100%;
-      font-family: 'Poppins', sans-serif;
-      background: #000;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: white;
-      margin: 0;
     }
 
     body::before {
       content: "";
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      backdrop-filter: blur(var(--blur-amount));
+      backdrop-filter: blur(15px);
       z-index: 0;
     }
 
@@ -47,17 +41,18 @@
       border-radius: var(--text-radius);
       text-align: center;
       z-index: 1;
-      width: 100%;
       max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     h1 {
-      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-size: 2.5rem;
       margin-bottom: 1rem;
     }
 
     p {
-      font-size: clamp(1rem, 3vw, 1.2rem);
+      font-size: 1.2rem;
     }
 
     .heart {
@@ -67,19 +62,13 @@
       height: 20px;
       background: red;
       transform: rotate(-45deg);
-      opacity: 0.7;
+      opacity: 0.6;
       z-index: 0;
       pointer-events: none;
-
-      animation-name: heartbeat;
-      animation-duration: 1.2s;
-      animation-iteration-count: infinite;
-      animation-timing-function: ease-in-out;
-
+      animation: heartbeat 1.2s infinite ease-in-out;
       box-shadow:
-        0 0 10px 5px rgba(255, 0, 0, 0.6),
-        0 0 20px 10px rgba(255, 0, 0, 0.3),
-        0 0 30px 15px rgba(255, 0, 0, 0.2);
+        0 0 6px 3px rgba(255, 0, 0, 0.4),
+        0 0 10px 6px rgba(255, 0, 0, 0.3);
     }
 
     .heart::before,
@@ -98,17 +87,16 @@
     }
 
     .heart::after {
-      left: 10px;
       top: 0;
+      left: 10px;
     }
 
     @keyframes heartbeat {
       0%, 100% {
         transform: rotate(-45deg) scale(1);
         box-shadow:
-          0 0 10px 5px rgba(255, 0, 0, 0.6),
-          0 0 20px 10px rgba(255, 0, 0, 0.3),
-          0 0 30px 15px rgba(255, 0, 0, 0.2);
+          0 0 6px 3px rgba(255, 0, 0, 0.4),
+          0 0 10px 6px rgba(255, 0, 0, 0.3);
       }
       50% {
         transform: rotate(-45deg) scale(1.2);
@@ -116,11 +104,15 @@
       }
     }
 
-    /* Мобильная адаптация */
     @media (max-width: 480px) {
       .content {
-        max-width: 90vw;
         padding: 1rem;
+      }
+      h1 {
+        font-size: 1.8rem;
+      }
+      p {
+        font-size: 1rem;
       }
       .heart {
         width: 14px;
@@ -137,7 +129,7 @@
 <body>
   <div class="content">
     <h1>KRISTIEE – Dirty</h1>
-    <p>Tap on screen to play</p>
+    <p>Музыка начинается автоматически</p>
   </div>
 
   <audio id="backgroundAudio" src="dirty.mp3" preload="auto" loop></audio>
@@ -151,13 +143,15 @@
       });
     }
 
-    // Определяем количество сердечек в зависимости от ширины экрана
-    const heartsCount = window.innerWidth < 480 ? 15 : 40;
+    // 🔁 Количество сердечек: меньше на мобильных
+    const isMobile = window.innerWidth <= 480;
+    const heartsCount = isMobile ? 20 : 40;
     const hearts = [];
 
     function resetHeart(heart) {
-      const width = heart.offsetWidth || 15;
-      heart.style.left = Math.random() * (window.innerWidth - width) + "px";
+      const heartWidth = isMobile ? 14 : 20;
+      const maxLeft = window.innerWidth - heartWidth;
+      heart.style.left = Math.random() * maxLeft + "px";
       heart.style.bottom = "0px";
       heart.style.opacity = (0.3 + Math.random() * 0.4).toFixed(2);
     }
@@ -166,8 +160,8 @@
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.style.animationDelay = (Math.random() * 1.2) + 's';
-      document.body.appendChild(heart);
       resetHeart(heart);
+      document.body.appendChild(heart);
       return {
         el: heart,
         y: 0,
@@ -183,6 +177,16 @@
       }
       heartObj.el.style.bottom = heartObj.y + "px";
     }
+
+    // 🚫 Остановка звука в фоне
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        audio.pause();
+      } else {
+		  audio.play().catch(() => {});
+	  }
+		  
+    });
 
     window.addEventListener('load', () => {
       tryPlayAudio();
