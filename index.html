@@ -129,7 +129,9 @@
 <body>
   <div class="content">
     <h1>KRISTIEE – Dirty</h1>
-    <p>Музыка начинается автоматически</p>
+    <p>Tap to play</p>
+    <p>Клацніть для відтворення</p> 
+    <p>Нажмите для воспроизведения</p>
   </div>
 
   <audio id="backgroundAudio" src="dirty.mp3" preload="auto" loop></audio>
@@ -139,11 +141,11 @@
 
     function tryPlayAudio() {
       audio.play().catch(() => {
-        console.warn("Автовоспроизведение заблокировано браузером. Кликните по странице для запуска.");
+        console.warn("Autoplay blocked. Tap on page to play.");
       });
     }
 
-    // 🔁 Количество сердечек: меньше на мобильных
+    // 🔁 Hearts quantity: less on phones
     const isMobile = window.innerWidth <= 480;
     const heartsCount = isMobile ? 20 : 40;
     const hearts = [];
@@ -178,7 +180,7 @@
       heartObj.el.style.bottom = heartObj.y + "px";
     }
 
-    // 🚫 Остановка звука в фоне
+    // 🚫 Pause when page unfocused
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         audio.pause();
