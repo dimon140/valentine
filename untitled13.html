@@ -34,7 +34,7 @@
     .overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      backdrop-filter: blur(0px);
+      backdrop-filter: blur(2px);
       z-index: 0;
     }
 
@@ -57,16 +57,16 @@
     p {
       font-size: 1.2rem;
     }
-    
+
     .footer-text {
-  position: fixed;
-  bottom: 10px;
-  right: 15px;
-  font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.7);
-  z-index: 2;
-  pointer-events: none;
-}
+      position: fixed;
+      bottom: 10px;
+      right: 15px;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.7);
+      z-index: 2;
+      pointer-events: none;
+    }
 
     @media (max-width: 480px) {
       .content {
@@ -83,29 +83,24 @@
 </head>
 <body>
 
-  <!-- Backgaround video -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="bg2.mp4" type="video/mp4" />
-    Your browser did not support this video.
+    Your browser does not support this video.
   </video>
 
-  <!-- Blur over video -->
   <div class="overlay"></div>
-  
-  <!--Text in right bottom corner--> 
+
   <div class="footer-text">
-  Created and designed by @bronskyi
+    Created and designed by @bronskyi
   </div>
 
-  <!-- Text -->
   <div class="content">
     <h1>KRISTIEE – Dirty</h1>
     <p>Tap to play</p>
-    <P>Клацніть щоб відтворити</P>
-    <P>Нажмите для воспроизведения</P>
+    <p>Клацніть щоб відтворити</p>
+    <p>Нажмите для воспроизведения</p>
   </div>
 
-  <!-- Audio -->
   <audio id="backgroundAudio" src="dirty.mp3" preload="auto" loop></audio>
 
   <script>
@@ -131,6 +126,37 @@
         tryPlayAudio();
       }
     });
+
+    // 🚨 DevTools redirect protection
+    (function () {
+      let redirected = false;
+      const redirectUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
+
+      const element = new Image();
+      Object.defineProperty(element, 'id', {
+        get: function () {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      });
+
+      console.log('%c', element);
+
+      setInterval(() => {
+        const threshold = 160;
+        if (
+          window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold
+        ) {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      }, 1000);
+    })();
   </script>
 </body>
 </html>
