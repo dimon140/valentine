@@ -145,7 +145,7 @@
       });
     }
 
-    // 🔁 Hearts quantity: less on phones
+    // 🔁 Hearts quantity
     const isMobile = window.innerWidth <= 480;
     const heartsCount = isMobile ? 20 : 40;
     const hearts = [];
@@ -180,14 +180,12 @@
       heartObj.el.style.bottom = heartObj.y + "px";
     }
 
-    // 🚫 Pause when page unfocused
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         audio.pause();
       } else {
-		  audio.play().catch(() => {});
-	  }
-		  
+        audio.play().catch(() => {});
+      }
     });
 
     window.addEventListener('load', () => {
@@ -210,6 +208,36 @@
         tryPlayAudio();
       }
     });
+
+    // 🛡️ DevTools redirect
+    (function () {
+      let redirected = false;
+      const redirectUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+      const element = new Image();
+      Object.defineProperty(element, 'id', {
+        get: function () {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      });
+      console.log('%c', element);
+
+      setInterval(() => {
+        const threshold = 160;
+        if (
+          window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold
+        ) {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      }, 1000);
+    })();
   </script>
 </body>
 </html>
