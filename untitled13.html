@@ -52,7 +52,6 @@
 .btn-spotify,
 .btn-yamusic, 
 .btn-apple {
-  flex: 1;
   width: 140px;
   justify-content: center;
   padding: 0.6rem 1.2rem;
@@ -104,7 +103,7 @@
 	color: white;
 }
 .btn-yamusic:hover {
-	background-color: #ffffff;
+	background-color: #fa0202;
 }
 
 .btn-apple {
@@ -202,12 +201,12 @@
   <div class="button-row">
     <button class="btn-telegram" onclick="window.location.href='https://t.me/kristiee2025'"><i class="fa-brands fa-telegram"></i> Telegram</button>
     <button class="btn-soundcloud" onclick="window.location.href='https://soundcloud.com/artemij-ermoshin/dirty-wav'"><i class="fab fa-soundcloud"></i> SoundCloud</button>
-    <button class="btn-yamusic" onclick="window.location.href='https://music.yandex.ru/album/36805749?utm_source=bandlink&utm_medium=KRISTIEE&utm_campaign=Dirty&utm_term=0i3zw'"><i class="fa-brands fa-yandex-international"></i>YaMusic</button>
+    <button class="btn-yamusic" onclick="window.location.href='https://music.yandex.ru/album/36805749?utm_source=bandlink&utm_medium=KRISTIEE&utm_campaign=Dirty&utm_term=0i3zw'"><i class="fa-brands fa-yandex"></i> Yandex</button>
   </div>
   <div class="button-row">
     <button class="btn-ytmusic" onclick="window.location.href='https://music.youtube.com/playlist?list=OLAK5uy_l_J52MedP3gvXeby6nSwEKgBsME9N7wHE'"><i class="fa-brands fa-youtube"></i> YT Music</button>
     <button class="btn-spotify" onclick="window.location.href='https://open.spotify.com/album/2Ufmz6DSeQdK9cVAIfcwEb'"><i class="fa-brands fa-spotify"></i> Spotify</button>
-    <button class="btn-apple" onclick="window.location.href='https://music.apple.com/ru/album/dirty-single/1816924714'"><i class="fa-brands fa-apple"></i> Apple Music</button>
+    <button class="btn-apple" onclick="window.location.href='https://music.apple.com/ru/album/dirty-single/1816924714'"><i class="fa-brands fa-apple"></i> Music</button>
     
   </div>
 </div>
@@ -241,6 +240,37 @@
     });
     
         // DevTools redirect protection
+    (function () {
+      let redirected = false;
+      const redirectUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
+
+      const element = new Image();
+      Object.defineProperty(element, 'id', {
+        get: function () {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      });
+
+      console.log('%c', element);
+
+      setInterval(() => {
+        const threshold = 160;
+        if (
+          window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold
+        ) {
+          if (!redirected) {
+            redirected = true;
+            window.location.href = redirectUrl;
+          }
+        }
+      }, 1000);
+    })();
+
+ // DevTools redirect protection
     (function () {
       let redirected = false;
       const redirectUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
