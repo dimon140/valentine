@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>KRISTIEE – Dirty</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
@@ -30,11 +31,74 @@
       object-fit: cover;
       z-index: -1;
     }
+    
+.all-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1rem;
+  z-index: 2;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.btn-telegram,
+.btn-soundcloud,
+.btn-ytmusic,
+.btn-spotify {
+  padding: 0.6rem 1.2rem;
+  margin: 0.5rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-telegram {
+  background-color: transparent;
+  color: white;
+}
+.btn-telegram:hover {
+  background-color: #0088cc;
+}
+
+.btn-soundcloud {
+  background-color: transparent;
+  color: white;
+}
+.btn-soundcloud:hover {
+  background-color: #ff7700;
+}
+
+.btn-ytmusic {
+  background-color: transparent;
+  color: white;
+}
+.btn-ytmusic:hover {
+  background-color: #ff0000;
+}
+
+.btn-spotify {
+  background-color: transparent;
+  color: white;
+}
+.btn-spotify:hover {
+  background-color: #1ed760;
+}
+
 
     .overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      backdrop-filter: blur(2px);
+      backdrop-filter: blur(0px);
       z-index: 0;
     }
 
@@ -57,16 +121,16 @@
     p {
       font-size: 1.2rem;
     }
-
+    
     .footer-text {
-      position: fixed;
-      bottom: 10px;
-      right: 15px;
-      font-size: 0.75rem;
-      color: rgba(255, 255, 255, 0.7);
-      z-index: 2;
-      pointer-events: none;
-    }
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  z-index: 2;
+  pointer-events: none;
+}
 
     @media (max-width: 480px) {
       .content {
@@ -83,24 +147,39 @@
 </head>
 <body>
 
+  <!-- Backgaround video -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="bg2.mp4" type="video/mp4" />
-    Your browser does not support this video.
+    Your browser did not support this video.
   </video>
 
+  <!-- Blur over video -->
   <div class="overlay"></div>
-
+  
+  <!--Text in right bottom corner--> 
   <div class="footer-text">
-    Created and designed by @bronskyi
+  Created and designed by @bronskyi
   </div>
 
+  <!-- Text -->
   <div class="content">
     <h1>KRISTIEE – Dirty</h1>
     <p>Tap to play</p>
-    <p>Клацніть щоб відтворити</p>
-    <p>Нажмите для воспроизведения</p>
+    <P>Клацніть щоб відтворити</P>
+    <P>Нажмите для воспроизведения</P>
+    <div class="all-buttons">
+  <div class="button-row">
+    <button class="btn-telegram" onclick="window.location.href='https://t.me/kristiee2025'"><i class="fa-brands fa-telegram"></i> Telegram</button>
+    <button class="btn-soundcloud" onclick="window.location.href='https://soundcloud.com/artemij-ermoshin/dirty-wav'"><i class="fab fa-soundcloud"></i> SoundCloud</button>
   </div>
+  <div class="button-row">
+    <button class="btn-ytmusic" onclick="window.location.href='https://music.youtube.com/playlist?list=OLAK5uy_l_J52MedP3gvXeby6nSwEKgBsME9N7wHE'"><i class="fa-brands fa-youtube"></i> YT Music</button>
+    <button class="btn-spotify" onclick="window.location.href='https://open.spotify.com/album/2Ufmz6DSeQdK9cVAIfcwEb'"><i class="fa-brands fa-spotify"></i> Spotify</button>
+  </div>
+</div>
 
+
+  <!-- Audio -->
   <audio id="backgroundAudio" src="dirty.mp3" preload="auto" loop></audio>
 
   <script>
@@ -126,37 +205,6 @@
         tryPlayAudio();
       }
     });
-
-    // 🚨 DevTools redirect protection
-    (function () {
-      let redirected = false;
-      const redirectUrl = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"; 
-
-      const element = new Image();
-      Object.defineProperty(element, 'id', {
-        get: function () {
-          if (!redirected) {
-            redirected = true;
-            window.location.href = redirectUrl;
-          }
-        }
-      });
-
-      console.log('%c', element);
-
-      setInterval(() => {
-        const threshold = 160;
-        if (
-          window.outerWidth - window.innerWidth > threshold ||
-          window.outerHeight - window.innerHeight > threshold
-        ) {
-          if (!redirected) {
-            redirected = true;
-            window.location.href = redirectUrl;
-          }
-        }
-      }, 1000);
-    })();
   </script>
 </body>
 </html>
